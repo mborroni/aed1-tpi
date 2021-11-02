@@ -5,11 +5,9 @@
 using namespace std;
 
 // Implementacion Problema 1
+
 bool esEncuestaValida(eph_h th, eph_i ti) {
-    bool resp = false;
-
-    // TODO
-
+    bool resp = esValida(th, ti);
     return resp;
 }
 
