@@ -1,0 +1,4 @@
+-vale usar una const para las auxiliares? o usamos una función?
+- no copiar los predicados?
+- se deberia llamar menosDe20 la función?
+- falta poner el año en el pred del rango
