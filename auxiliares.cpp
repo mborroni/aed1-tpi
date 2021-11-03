@@ -141,7 +141,6 @@ bool mismoAnioYTrimestreH(eph_h th, int anio, int trimestre) {
     return true;
 }
 
-
 bool mismoAnioYTrimestre(eph_i ti, eph_h th) {
     int anio = ti[0][ItemInd::INDANIO];
     int trimestre = ti[0][ItemInd::INDTRIMESTRE];
@@ -231,7 +230,7 @@ bool esValida(eph_h th, eph_i ti) {
 
 // auxiliares ejercicio 2
 eph_h obtenerCasasEnRegion(eph_h th, int region) {
-    eph_h hogaresEnRegion;
+    eph_h hogaresEnRegion = {};
     for (int i = 0; i < th.size(); i++) {
         if (th[i][ItemHogar::REGION] == region && th[i][ItemHogar::IV1] == 1) {
             hogaresEnRegion.push_back(th[i]);
@@ -243,7 +242,7 @@ eph_h obtenerCasasEnRegion(eph_h th, int region) {
 int obtenerMaximoHabitaciones(eph_h &hogares) {
     int maxHabitaciones = 0;
     for (int i = 0; i < hogares.size(); i++) {
-        if (hogares[i][ItemHogar::IV2] > maxHabitaciones) {
+        if (hogares[i][ItemHogar::IV2] >= maxHabitaciones) {
             maxHabitaciones = hogares[i][ItemHogar::IV2];
         }
     }

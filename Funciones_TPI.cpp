@@ -42,7 +42,7 @@ vector<vector<int> > leerEncuestaIH(string nombreArchivo) {
 }
 
 void leerEncuesta(string filename, eph_h &th, eph_i &ti) {
-    string path = "datos/";
+    string path = "../../datos/";
     th = leerEncuestaIH(path + filename + ".th");
     ti = leerEncuestaIH(path + filename + ".ti");
 }
