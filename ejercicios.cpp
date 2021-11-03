@@ -11,12 +11,36 @@ bool esEncuestaValida(eph_h th, eph_i ti) {
     return resp;
 }
 
+eph_h obtenerCasasEnRegion(eph_h th, int region) {
+    eph_h hogaresEnRegion;
+    for (int i = 0; i < th.size(); i++) {
+        if (th[i][ItemHogar::REGION] == region && th[i][ItemHogar::IV1] == 1) {
+            hogaresEnRegion.push_back(th[i]);
+        }
+    }
+    return hogaresEnRegion;
+}
+
+int obtenerMaximoHabitaciones(eph_h &hogares) {
+    int maxHabitaciones = 0;
+    for (int i = 0; i < hogares.size(); i++) {
+        if (hogares[i][ItemHogar::IV2] > maxHabitaciones) {
+            maxHabitaciones = hogares[i][ItemHogar::IV2];
+        }
+    }
+    return maxHabitaciones;
+}
+
 // Implementacion Problema 2
 vector<int> histHabitacional(eph_h th, eph_i ti, int region) {
-    vector<int> resultado = {-1, -1, -1, -1, -1, -1};
+    eph_h hogaresEnRegion = obtenerCasasEnRegion(th, region);
 
-    // TODO
+    int maxHabitaciones = obtenerMaximoHabitaciones(hogaresEnRegion);
 
+    vector<int> resultado(maxHabitaciones, 0);
+    for (int i = 0; i < hogaresEnRegion.size(); i++) {
+        resultado[hogaresEnRegion[i][ItemHogar::IV2] - 1]++;
+    }
     return resultado;
 }
 
