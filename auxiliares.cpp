@@ -228,3 +228,24 @@ bool esValida(eph_h th, eph_i ti) {
             && menosDe21MiembrosPorHogar(th, ti) && cantidadValidaDormitorios(th)
             && valoresEnRangoI(ti) && valoresEnRangoH(th));
 }
+
+// auxiliares ejercicio 2
+eph_h obtenerCasasEnRegion(eph_h th, int region) {
+    eph_h hogaresEnRegion;
+    for (int i = 0; i < th.size(); i++) {
+        if (th[i][ItemHogar::REGION] == region && th[i][ItemHogar::IV1] == 1) {
+            hogaresEnRegion.push_back(th[i]);
+        }
+    }
+    return hogaresEnRegion;
+}
+
+int obtenerMaximoHabitaciones(eph_h &hogares) {
+    int maxHabitaciones = 0;
+    for (int i = 0; i < hogares.size(); i++) {
+        if (hogares[i][ItemHogar::IV2] > maxHabitaciones) {
+            maxHabitaciones = hogares[i][ItemHogar::IV2];
+        }
+    }
+    return maxHabitaciones;
+}

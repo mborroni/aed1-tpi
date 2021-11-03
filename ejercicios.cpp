@@ -13,10 +13,14 @@ bool esEncuestaValida(eph_h th, eph_i ti) {
 
 // Implementacion Problema 2
 vector<int> histHabitacional(eph_h th, eph_i ti, int region) {
-    vector<int> resultado = {-1, -1, -1, -1, -1, -1};
+    eph_h hogaresEnRegion = obtenerCasasEnRegion(th, region);
 
-    // TODO
+    int maxHabitaciones = obtenerMaximoHabitaciones(hogaresEnRegion);
 
+    vector<int> resultado(maxHabitaciones, 0);
+    for (int i = 0; i < hogaresEnRegion.size(); i++) {
+        resultado[hogaresEnRegion[i][ItemHogar::IV2] - 1]++;
+    }
     return resultado;
 }
 
