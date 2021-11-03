@@ -59,4 +59,8 @@ bool valoresEnRangoH(eph_h th);
 
 bool esValida(eph_h th, eph_i ti);
 
+eph_h obtenerCasasEnRegion(eph_h th, int region);
+
+int obtenerMaximoHabitaciones(eph_h &hogares);
+
 #endif //SOLUCION_AUXILIARES_H
