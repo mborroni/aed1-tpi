@@ -39,31 +39,125 @@ vector<pair<int, float> > laCasaEstaQuedandoChica(eph_h th, eph_i ti) {
 }
 
 // Implementacion Problema 4
+bool trabaja(individuo i){
+    return(i[ItemInd::ESTADO]==1);
+}
+
+bool esDeCiudadGrande(individuo i, eph_h th){
+    for(int j=0; j< th.size(); j++){
+        if(esSuHogar(th[j],i)&& th[j][ItemHogar::MAS_500]==1){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool esCasaODepartamento(hogar h){
+    return(h[ItemHogar::IV1]==1 || h[ItemHogar::IV1]== 2);
+}
+
+bool suHogarEsCasaODepartamento(individuo i, eph_h th){
+    for(int j=0; j< th.size(); j++){
+        if(esSuHogar(th[j],i)&& esCasaODepartamento(th[j])){
+            return true;
+        }
+    }
+    return false;
+}
+
+bool individuoEnHogarValido(individuo i, eph_h th){
+    bool res= (esDeCiudadGrande(i,th)&& suHogarEsCasaODepartamento(i,th));
+    return(res);
+}
+
+bool realizaSusTareasEnEsteHogar(individuo i){
+    return(i[ItemInd::PP04G]==6);
+}
+
+bool tieneEspaciosReservadosParaElTrabajo(hogar h){
+    return(h[ItemHogar::II3]==1);
+}
+
+bool suHogarTieneEspaciosReservadosParaElTrabajo(individuo i, eph_h th){
+    for(int j=0; j< th.size(); j++){
+        if(esSuHogar(th[j],i)&& tieneEspaciosReservadosParaElTrabajo(th[j])){
+            return true;
+        }
+    }
+    return false;
+}
+
+
+bool trabajaEnSuVivienda(individuo i, eph_h th){
+    return (realizaSusTareasEnEsteHogar(i) && suHogarTieneEspaciosReservadosParaElTrabajo(i,th));
+}
+
+int cantIndividuosQueTrabajan(eph_h th, eph_i ti){
+    int suma= 0;
+    for(int i=0; i< ti.size(); i++){
+        if(trabaja(ti[i])&& individuoEnHogarValido(ti[i],th)){
+            suma++;
+        }
+    }
+    return suma;
+}
+
+int cantIndividuosTrabajandoEnSuVivienda(eph_h th, eph_i ti){
+    int suma= 0;
+    for(int i=0; i< ti.size(); i++){
+        if(trabaja(ti[i])&& trabajaEnSuVivienda(ti[i],th)&& individuoEnHogarValido(ti[i],th)){
+            suma++;
+        }
+    }
+    return suma;
+}
+
+
+float proporcionTeleworking(eph_h th, eph_i ti){
+    if(cantIndividuosQueTrabajan(th,ti)>0){
+        float res = float(cantIndividuosTrabajandoEnSuVivienda(th,ti))/ float(cantIndividuosQueTrabajan(th,ti));
+        return(res);
+    } else {
+        return 0;
+    }
+}
+
+
 bool creceElTeleworkingEnCiudadesGrandes(eph_h t1h, eph_i t1i, eph_h t2h, eph_i t2i) {
     bool resp = false;
-
-    // TODO
-
+    resp= (proporcionTeleworking(t2h,t2i)>proporcionTeleworking(t1h,t1i));
     return resp;
 }
 
 // Implementacion Problema 5
+bool tieneCasaPropia(hogar h){
+    return (h[ItemHogar::II7]==1);
+}
+
+bool tieneCasaChica(hogar h, eph_i ti){
+    return((cantHabitantes(h,ti)-2)> h[ItemHogar::II2]);
+}
+
 int costoSubsidioMejora(eph_h th, eph_i ti, int monto) {
-    int resp = -1;
-
-    // TODO
-
+    int resp = 0;
+    for(int i= 0; i< th.size(); i++){
+        if(tieneCasaPropia(th[i])&& tieneCasaChica(th[i],ti)){
+            resp+= monto;
+        }
+    }
     return resp;
 }
 
 // Implementacion Problema 6
 join_hi generarJoin(eph_h th, eph_i ti) {
-    hogar h = {};
-    individuo i = {};
-    join_hi resp = {make_pair(h, i)};
-
-    // TODO
-
+    join_hi resp= {};
+    for(int i=0; i< ti.size(); i++){
+        for(int j=0; j< th.size(); j++){
+            if (esSuHogar(ti[i],th[j])){
+                resp.push_back(make_pair(th[j],ti[i]));
+            }
+        }
+    }
     return resp;
 }
 
