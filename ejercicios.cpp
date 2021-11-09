@@ -280,6 +280,7 @@ void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
         return cantidadHogares;
     }
 
+
     vector<int> histogramaDeAnillosConcentricos(eph_h th, eph_i ti, pair<int, int> centro, vector<int> distancias) {
         vector<int> resp = {};
         resp.push_back(cantidadDeHogaresEnAnillo(th, 0, distancias[0], centro));
@@ -288,6 +289,7 @@ void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
             resp.push_back(hogaresEnAnillo);
         }
         return resp;
+
     }
 
 // Implementacion Problema 11
