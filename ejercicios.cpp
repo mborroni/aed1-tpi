@@ -183,7 +183,7 @@ join_hi generarJoin(eph_h th, eph_i ti) {
 
 void swap(vector<vector<dato>> &lista, int i, int j) {
     vector<dato> k = lista[i];
-    lista[i]=lista[j];
+    lista[i] = lista[j];
     lista[j] = k;
 }
 
@@ -191,7 +191,7 @@ void swap(vector<vector<dato>> &lista, int i, int j) {
 void burbujeo(vector<vector<dato>> &lista, int i) {
     for (int j = lista.size() - 1; j > i; j--) {
         if (lista[j] < lista[j - 1]) {
-            swap(lista, j, j-1);
+            swap(lista, j, j - 1);
         }
     }
 }
@@ -205,69 +205,98 @@ vector<vector<dato>> bubbleSort(vector<vector<dato>> lista) {
 
 
 // Implementacion Problema 7
-void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
 
-    // TODO
+//bubble sort
+void swap(vector<vector<dato>> &lista, int i, int j) {
+    vector<dato> k = lista[i];
+    lista[i] = lista[j];
+    lista[j] = k;
+}
 
+
+void burbujeo(vector<vector<dato>> &lista, int i) {
+    for (int j = lista.size() - 1; j > i; j--) {
+        if (lista[j][ItemHogar::REGION] < lista[j - 1][ItemHogar::REGION] ||
+        (lista[j][ItemHogar::REGION] == lista[j - 1][ItemHogar::REGION] &&
+        lista[j][ItemHogar::HOGCODUSU] < lista[j - 1][ItemHogar::HOGCODUSU])) {
+            swap(lista, j, j - 1);
+        }
+    }
+}
+
+void bubbleSort(vector<vector<dato>> &lista) {
+    for (int i = 0; i < lista.size(); i++) {
+        burbujeo(lista, i);
+    }
     return;
 }
 
+
+void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
+    bubbleSort(th);
+
+        return;
+    }
+
+
+
+
 // Implementacion Problema 8
-vector<hogar> muestraHomogenea(eph_h &th, eph_i &ti) {
-    hogar h = {};
-    vector<hogar> resp = {h};
+    vector<hogar> muestraHomogenea(eph_h &th, eph_i &ti) {
+        hogar h = {};
+        vector<hogar> resp = {h};
 
-    // TODO
+        // TODO
 
-    return resp;
-}
+        return resp;
+    }
 
 // Implementacion Problema 9
-void corregirRegion(eph_h &th, eph_i ti) {
-    for (int i = 0; i < th.size(); i++) {
-        if (th[i][ItemHogar::REGION] == 1) {
-            th[i][ItemHogar::REGION] = 43;
+    void corregirRegion(eph_h &th, eph_i ti) {
+        for (int i = 0; i < th.size(); i++) {
+            if (th[i][ItemHogar::REGION] == 1) {
+                th[i][ItemHogar::REGION] = 43;
+            }
         }
     }
-}
 
 // Implementacion Problema 10
-float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud) {
-    return sqrt(pow((centro.first - latitud), 2) + pow(centro.second - longitud, 2));
-}
+    float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud) {
+        return sqrt(pow((centro.first - latitud), 2) + pow(centro.second - longitud, 2));
+    }
 
-bool hogarEnAnillo(hogar hogar, int desde, int hasta, pair<int, int> centro) {
-    float distancia = distanciaEuclideana(centro, hogar[ItemHogar::HOGLATITUD], hogar[ItemHogar::HOGLONGITUD]);
-    return float(desde) < distancia && distancia <= float(hasta);
-}
+    bool hogarEnAnillo(hogar hogar, int desde, int hasta, pair<int, int> centro) {
+        float distancia = distanciaEuclideana(centro, hogar[ItemHogar::HOGLATITUD], hogar[ItemHogar::HOGLONGITUD]);
+        return float(desde) < distancia && distancia <= float(hasta);
+    }
 
-int cantidadDeHogaresEnAnillo(eph_h th, int desde, int hasta, pair<int, int> centro) {
-    int cantidadHogares = 0;
-    for (int i = 0; i < th.size(); i++) {
-        if (hogarEnAnillo(th[i], desde, hasta, centro)) {
-            cantidadHogares++;
+    int cantidadDeHogaresEnAnillo(eph_h th, int desde, int hasta, pair<int, int> centro) {
+        int cantidadHogares = 0;
+        for (int i = 0; i < th.size(); i++) {
+            if (hogarEnAnillo(th[i], desde, hasta, centro)) {
+                cantidadHogares++;
+            }
         }
+        return cantidadHogares;
     }
-    return cantidadHogares;
-}
 
-vector<int> histogramaDeAnillosConcentricos(eph_h th, eph_i ti, pair<int, int> centro, vector<int> distancias) {
-    vector<int> resp = {};
-    resp.push_back(cantidadDeHogaresEnAnillo(th, 0, distancias[0], centro));
-    for (int i = 0; i < distancias.size() - 1; i++) {
-        int hogaresEnAnillo = cantidadDeHogaresEnAnillo(th, distancias[i], distancias[i + 1], centro);
-        resp.push_back(hogaresEnAnillo);
+    vector<int> histogramaDeAnillosConcentricos(eph_h th, eph_i ti, pair<int, int> centro, vector<int> distancias) {
+        vector<int> resp = {};
+        resp.push_back(cantidadDeHogaresEnAnillo(th, 0, distancias[0], centro));
+        for (int i = 0; i < distancias.size() - 1; i++) {
+            int hogaresEnAnillo = cantidadDeHogaresEnAnillo(th, distancias[i], distancias[i + 1], centro);
+            resp.push_back(hogaresEnAnillo);
+        }
+        return resp;
     }
-    return resp;
-}
 
 // Implementacion Problema 11
-pair<eph_h, eph_i> quitarIndividuos(eph_i &ti, eph_h &th, vector<pair<int, dato> > busqueda) {
-    eph_h rth = {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
-    eph_i rti = {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
-    pair<eph_h, eph_i> resp = make_pair(rth, rti);
+    pair<eph_h, eph_i> quitarIndividuos(eph_i &ti, eph_h &th, vector<pair<int, dato> > busqueda) {
+        eph_h rth = {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
+        eph_i rti = {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
+        pair<eph_h, eph_i> resp = make_pair(rth, rti);
 
-    // TODO
+        // TODO
 
-    return resp;
-}
+        return resp;
+    }
