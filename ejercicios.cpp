@@ -38,20 +38,21 @@ vector<pair<int, float> > laCasaEstaQuedandoChica(eph_h th, eph_i ti) {
     int casasConHC = 0;
     int hogaresValidos = 0;
 
-    for(int i=1; i < resp.size(); i++) {
-      for(int j=0; j < th.size(); j++) {
-         if (th[j][ItemHogar::IV1] == 1 && th[j][ItemHogar::REGION] == resp[i].first && th[j][ItemHogar::MAS_500] == 0){
-             hogaresValidos++;
-             if (cantidadDeHabitantes(th[j], ti) > 3 * th[j][ItemHogar::II2]){
-               casasConHC++;
+    for (int i = 1; i < resp.size(); i++) {
+        for (int j = 0; j < th.size(); j++) {
+            if (th[j][ItemHogar::IV1] == 1 && th[j][ItemHogar::REGION] == resp[i].first &&
+                th[j][ItemHogar::MAS_500] == 0) {
+                hogaresValidos++;
+                if (cantidadDeHabitantes(th[j], ti) > 3 * th[j][ItemHogar::II2]) {
+                    casasConHC++;
 
-           }
+                }
 
-         }
-      }
-      if (hogaresValidos > 0){
-          resp[i].second = casasConHC/hogaresValidos;
-      }
+            }
+        }
+        if (hogaresValidos > 0) {
+            resp[i].second = casasConHC / hogaresValidos;
+        }
     }
 
     return resp;
@@ -180,6 +181,28 @@ join_hi generarJoin(eph_h th, eph_i ti) {
     return resp;
 }
 
+void swap(vector<vector<dato>> &lista, int i, int j) {
+    vector<dato> k = lista[i];
+    lista[i] = lista[j];
+    lista[j] = k;
+}
+
+
+void burbujeo(vector<vector<dato>> &lista, int i) {
+    for (int j = lista.size() - 1; j > i; j--) {
+        if (lista[j] < lista[j - 1]) {
+            swap(lista, j, j - 1);
+        }
+    }
+}
+
+vector<vector<dato>> bubbleSort(vector<vector<dato>> lista) {
+    for (int i = 0; i < lista.size(); i++) {
+        burbujeo(lista, i);
+    }
+    return lista;
+}
+
 // Implementacion Problema 7
 void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
 
@@ -231,7 +254,7 @@ vector<int> histogramaDeAnillosConcentricos(eph_h th, eph_i ti, pair<int, int> c
     vector<int> resp = {};
     resp.push_back(cantidadDeHogaresEnAnillo(th, 0, distancias[0], centro));
     for (int i = 0; i < distancias.size() - 1; i++) {
-        int hogaresEnAnillo = cantidadDeHogaresEnAnillo(th, distancias[i], distancias[i+1], centro);
+        int hogaresEnAnillo = cantidadDeHogaresEnAnillo(th, distancias[i], distancias[i + 1], centro);
         resp.push_back(hogaresEnAnillo);
     }
     return resp;
