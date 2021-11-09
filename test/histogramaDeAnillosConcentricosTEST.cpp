@@ -46,6 +46,39 @@ TEST(histogramaDeAnillosConcentricosTEST, cuatroCuadrantes) {
     EXPECT_EQ(res, histogramaDeAnillosConcentricos(p.first, p.second, centro, distancias));
 }
 
+TEST(histogramaDeAnillosConcentricosTEST, distanciasCortas) {
+    vector<int> distancias = {1, 2, 3, 4};
+
+    pair<int, int> centro = {0, 0};
+
+    pair<eph_h, eph_i> p = encuesta_prueba({
+                                                   {1, 1},     // 1.41
+                                                   {3, 5},     // 5.83
+                                                   {53, 5},    // 52.24
+                                                   {101, 21},  // 103.16
+                                           });
+
+    vector<int> res = {0, 1, 0, 0};
+
+    EXPECT_EQ(res, histogramaDeAnillosConcentricos(p.first, p.second, centro, distancias));
+}
+
+TEST(histogramaDeAnillosConcentricosTEST, unaSolaDistancia) {
+    vector<int> distancias = {2};
+
+    pair<int, int> centro = {0, 0};
+
+    pair<eph_h, eph_i> p = encuesta_prueba({
+                                                   {1, 1},     // 1.41
+                                                   {5, 53},     // 5.83
+                                                   {53, 5},    // 52.24
+                                                   {101, 21},  // 103.16
+                                           });
+
+    vector<int> res = {1};
+
+    EXPECT_EQ(res, histogramaDeAnillosConcentricos(p.first, p.second, centro, distancias));
+}
 
 pair<eph_h, eph_i> encuesta_prueba(vector<pair<int, int>> pos) {
     eph_h th = {{22114, 2020,   3,  319611, 629088, 3,  41, 0,  1,  3,  1,  2},

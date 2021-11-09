@@ -203,8 +203,11 @@ bool valorRegionValido(int region) {
 }
 
 bool hogarValido(hogar h) {
-    return (h[ItemHogar::HOGCODUSU] > 0 && h[ItemHogar::HOGTRIMESTRE] > 0 && h[ItemHogar::HOGTRIMESTRE] <= 4
-            && h[ItemHogar::II7] > 0 && h[ItemHogar::II7] <= 3 && valorRegionValido(h[ItemHogar::REGION])
+    return (h[ItemHogar::HOGCODUSU] > 0 &&
+            h[ItemHogar::HOGTRIMESTRE] > 0 &&
+            h[ItemHogar::HOGTRIMESTRE] <= 4 &&
+            h[ItemHogar::II7] > 0 && h[ItemHogar::II7] <= 3 &&
+            valorRegionValido(h[ItemHogar::REGION])
             && (h[ItemHogar::MAS_500] == 0 || h[ItemHogar::MAS_500 == 1]) && h[ItemHogar::IV1] > 0 &&
             h[ItemHogar::IV1] <= 5
             && h[ItemHogar::IV2] > 0 && h[ItemHogar::II2] >= 1 && (h[ItemHogar::II3] == 1 || h[ItemHogar::II3] == 2));
