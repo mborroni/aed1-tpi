@@ -190,7 +190,6 @@ void swap(vector<vector<dato>> &lista, int i, int j) {
     lista[j] = k;
 }
 
-
 void burbujeo(vector<vector<dato>> &lista, int i) {
     for (int j = lista.size() - 1; j > i; j--) {
         if (lista[j][ItemHogar::REGION] < lista[j - 1][ItemHogar::REGION] ||
@@ -205,7 +204,6 @@ void bubbleSort(vector<vector<dato>> &lista) {
     for (int i = 0; i < lista.size(); i++) {
         burbujeo(lista, i);
     }
-    return;
 }
 
 void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
@@ -217,8 +215,6 @@ void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
 vector<hogar> muestraHomogenea(eph_h &th, eph_i &ti) {
     hogar h = {};
     vector<hogar> resp = {h};
-
-    // TODO
 
     return resp;
 }
@@ -260,16 +256,57 @@ vector<int> histogramaDeAnillosConcentricos(eph_h th, eph_i ti, pair<int, int> c
         resp.push_back(hogaresEnAnillo);
     }
     return resp;
+}
 
+bool cumpleBusqueda(individuo individuo, vector<pair<int, dato>> busqueda) {
+    bool cumpleCondicion = false;
+    for (int j = 0; j < busqueda.size(); j++) {
+        cumpleCondicion += (individuo[busqueda[j].first] == busqueda[j].second);
+    }
+    return cumpleCondicion;
+}
+
+int indiceEnTablaHogares(int codusu, eph_h th) {
+    for (int i = 0; i < th.size(); i++) {
+        if (th[i][HOGCODUSU] == codusu) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+void eliminarHogaresSinIndividuos(eph_i &ti, eph_h &th) {
+    int eliminados = 0;
+    for (int i = 0; i < th.size(); i++) {
+        if (cantidadDeHabitantes(th[i], ti) == 0) {
+            th.erase(th.begin() + i - eliminados);
+        }
+    }
 }
 
 // Implementacion Problema 11
-pair<eph_h, eph_i> quitarIndividuos(eph_i &ti, eph_h &th, vector<pair<int, dato> > busqueda) {
-    eph_h rth = {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
-    eph_i rti = {{-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1}};
-    pair<eph_h, eph_i> resp = make_pair(rth, rti);
+pair<eph_h, eph_i> quitarIndividuos(eph_i &ti, eph_h &th, vector<pair<int, dato>> busqueda) {
+    eph_h rth = {};
+    eph_i rti = {};
 
-    // TODO
+    eph_i ti0 = ti;
+
+    for (int i = 0; i < ti0.size(); i++) {
+        if (cumpleBusqueda(ti0[i], busqueda)) {
+            // si todavía no agregamos el hogar a res
+            if (indiceEnTablaHogares(ti0[i][INDCODUSU], rth) == -1) {
+                rth.push_back(th[indiceEnTablaHogares(ti0[i][INDCODUSU], th)]);
+            }
+
+            // agrego el individuo a res
+            rti.push_back(ti0[i]);
+            // borro del ti original al individuo
+            ti.erase(ti.begin() + i - rti.size() + 1);
+        }
+    }
+    eliminarHogaresSinIndividuos(ti, th);
+
+    pair<eph_h, eph_i> resp = make_pair(rth, rti);
 
     return resp;
 }
