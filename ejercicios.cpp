@@ -28,13 +28,31 @@ vector<int> histHabitacional(eph_h th, eph_i ti, int region) {
 // Implementacion Problema 3
 vector<pair<int, float> > laCasaEstaQuedandoChica(eph_h th, eph_i ti) {
 
-    vector<pair<int, float>> resp = {make_pair(1, -1.0),
-                                     make_pair(40, -1.0),
-                                     make_pair(41, -1.0),
-                                     make_pair(42, -1.0),
-                                     make_pair(43, -1.0),
-                                     make_pair(44, -1.0)};
-    // TODO
+    vector<pair<int, float>> resp = {make_pair(1, 0.0),
+                                     make_pair(40, 0.0),
+                                     make_pair(41, 0.0),
+                                     make_pair(42, 0.0),
+                                     make_pair(43, 0.0),
+                                     make_pair(44, 0.0)};
+
+    int casasConHC = 0;
+    int hogaresValidos = 0;
+
+    for(int i=1; i < resp.size(); i++) {
+      for(int j=0; j < th.size(); j++) {
+         if (th[j][ItemHogar::IV1] == 1 && th[j][ItemHogar::REGION] == resp[i].first && th[j][ItemHogar::MAS_500] == 0){
+             hogaresValidos++;
+             if (cantidadDeHabitantes(th[j], ti) > 3 * th[j][ItemHogar::II2]){
+               casasConHC++;
+
+           }
+
+         }
+      }
+      if (hogaresValidos > 0){
+          resp[i].second = casasConHC/hogaresValidos;
+      }
+    }
 
     return resp;
 }
