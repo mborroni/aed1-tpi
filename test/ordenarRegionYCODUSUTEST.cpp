@@ -24,8 +24,8 @@ TEST(ordenarRegionYCODUSUTEST, regionesDistintas) {
     };
 
     eph_h th_esperado = {
-        {334,  2017, 1, 1, 2, 0, 1, 3, 1, 2},
         {960,  2017, 1, 1, 1, 0, 1, 4, 1, 2},
+        {334,  2017, 1, 1, 2, 0, 1, 3, 1, 2},
     };
 
     eph_i ti_esperado = {
