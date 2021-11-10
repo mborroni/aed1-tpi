@@ -132,7 +132,6 @@ int cantIndividuosTrabajandoEnSuVivienda(eph_h th, eph_i ti) {
     return suma;
 }
 
-
 float proporcionTeleworking(eph_h th, eph_i ti) {
     if (cantIndividuosQueTrabajan(th, ti) > 0) {
         float res = float(cantIndividuosTrabajandoEnSuVivienda(th, ti)) / float(cantIndividuosQueTrabajan(th, ti));
@@ -141,7 +140,6 @@ float proporcionTeleworking(eph_h th, eph_i ti) {
         return 0;
     }
 }
-
 
 bool creceElTeleworkingEnCiudadesGrandes(eph_h t1h, eph_i t1i, eph_h t2h, eph_i t2i) {
     bool resp = false;
@@ -182,7 +180,7 @@ join_hi generarJoin(eph_h th, eph_i ti) {
 }
 
 // Implementacion Problema 7
-
+/*
 //bubble sort
 void swap(vector<vector<dato>> &lista, int i, int j) {
     vector<dato> k = lista[i];
@@ -200,16 +198,6 @@ void burbujeo(vector<vector<dato>> &lista, int i) {
         }
     }
 }
-
-void burbujeoInd(vector<vector<dato>> &lista, int i) {
-    for (int j = lista.size() - 1; j > i; j--) {
-        if (lista[j][ItemInd::INDCODUSU] > lista[j + 1][ItemInd::INDCODUSU] ||
-            (lista[j][ItemInd::INDCODUSU] == lista[j + 1][ItemInd::INDCODUSU])) {
-            swap(lista, j, j - 1);
-        }
-    }
-}
-
 
 void bubbleSort(vector<vector<dato>> &lista) {
     for (int i = 0; i < lista.size(); i++) {
@@ -229,9 +217,9 @@ void ordenarPorComponente(eph_h &th, eph_i &ti) {
         }
     }
 }
-
+*/
 void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
-    bubbleSort(th);
+
     return;
 }
 
@@ -327,8 +315,8 @@ vector<hogar> muestraHomogenea(eph_h &th, eph_i &ti) {
 // Implementacion Problema 9
 void corregirRegion(eph_h &th, eph_i ti) {
     for (int i = 0; i < th.size(); i++) {
-        if (th[i][ItemHogar::REGION] == 1) {
-            th[i][ItemHogar::REGION] = 43;
+        if (th[i][ItemHogar::REGION] == GBA) {
+            th[i][ItemHogar::REGION] = PAMPEANA;
         }
     }
 }
@@ -363,14 +351,18 @@ vector<int> histogramaDeAnillosConcentricos(eph_h th, eph_i ti, pair<int, int> c
     return resp;
 
 }
+
 bool cumpleBusqueda(individuo individuo, vector<pair<int, dato>> busqueda) {
-    bool cumpleCondicion = false;
+    bool cumpleCondicion = true;
     for (int j = 0; j < busqueda.size(); j++) {
-        cumpleCondicion += (individuo[busqueda[j].first] == busqueda[j].second);
+        if (individuo[busqueda[j].first] != busqueda[j].second) {
+            cumpleCondicion = false;
+        }
     }
     return cumpleCondicion;
 }
 
+// Implementacion Problema 11
 int indiceEnTablaHogares(int codusu, eph_h th) {
     for (int i = 0; i < th.size(); i++) {
         if (th[i][HOGCODUSU] == codusu) {
@@ -381,15 +373,16 @@ int indiceEnTablaHogares(int codusu, eph_h th) {
 }
 
 void eliminarHogaresSinIndividuos(eph_i &ti, eph_h &th) {
+    eph_h th0 = th;
     int eliminados = 0;
-    for (int i = 0; i < th.size(); i++) {
-        if (cantidadDeHabitantes(th[i], ti) == 0) {
+    for (int i = 0; i < th0.size(); i++) {
+        if (cantidadDeHabitantes(th0[i], ti) == 0) {
             th.erase(th.begin() + i - eliminados);
+            eliminados++;
         }
     }
 }
 
-// Implementacion Problema 11
 pair<eph_h, eph_i> quitarIndividuos(eph_i &ti, eph_h &th, vector<pair<int, dato>> busqueda) {
     eph_h rth = {};
     eph_i rti = {};

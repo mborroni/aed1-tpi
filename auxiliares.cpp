@@ -16,17 +16,9 @@ bool esVacia(vector<vector<dato>> t) {
     return (t.size() == 0);
 }
 
-int cantidadItemsIndividuo() {
-    return 11;
-}
-
-int cantidadItemsHogar() {
-    return 12;
-}
-
 bool cantidadCorrectaDeColumnasI(eph_i ti) {
     for (int i = 0; i < ti.size(); i++) {
-        if (ti[i].size() != cantidadItemsIndividuo()) {
+        if (ti[i].size() != FILAS_INDIVIDUO) {
             return false;
         }
     }
@@ -35,13 +27,12 @@ bool cantidadCorrectaDeColumnasI(eph_i ti) {
 
 bool cantidadCorrectaDeColumnasH(eph_h th) {
     for (int i = 0; i < th.size(); i++) {
-        if (th[i].size() != cantidadItemsHogar()) {
+        if (th[i].size() != FILAS_HOGAR) {
             return false;
         }
     }
     return true;
 }
-
 
 bool hayIndividuoConCodigo(eph_i ti, int codigo) {
     for (int j = 0; j < ti.size(); j++) {
@@ -154,7 +145,7 @@ bool menosDe21MiembrosPorHogar(eph_h th, eph_i ti) {
 
 bool cantidadValidaDormitorios(eph_h th) {
     for (int i = 0; i < th.size(); i++) {
-        if (th[i][ItemHogar::IV2] < th[i][ItemHogar::II2]) {
+        if (th[i][IV2] < th[i][II2]) {
             return false;
         }
     }
@@ -217,7 +208,7 @@ bool esValida(eph_h th, eph_i ti) {
 eph_h obtenerCasasEnRegion(eph_h th, int region) {
     eph_h hogaresEnRegion = {};
     for (int i = 0; i < th.size(); i++) {
-        if (th[i][ItemHogar::REGION] == region && th[i][ItemHogar::IV1] == 1) {
+        if (th[i][REGION] == region && th[i][IV1] == CASA) {
             hogaresEnRegion.push_back(th[i]);
         }
     }
@@ -227,8 +218,8 @@ eph_h obtenerCasasEnRegion(eph_h th, int region) {
 int obtenerMaximoHabitaciones(eph_h &hogares) {
     int maxHabitaciones = 0;
     for (int i = 0; i < hogares.size(); i++) {
-        if (hogares[i][ItemHogar::IV2] >= maxHabitaciones) {
-            maxHabitaciones = hogares[i][ItemHogar::IV2];
+        if (hogares[i][IV2] >= maxHabitaciones) {
+            maxHabitaciones = hogares[i][IV2];
         }
     }
     return maxHabitaciones;
