@@ -201,15 +201,14 @@ void burbujeo(vector<vector<dato>> &lista, int i) {
     }
 }
 
-void burbujeoInd (vector<vector<dato>> &lista, int i) {
+void burbujeoInd(vector<vector<dato>> &lista, int i) {
     for (int j = lista.size() - 1; j > i; j--) {
         if (lista[j][ItemInd::INDCODUSU] > lista[j + 1][ItemInd::INDCODUSU] ||
-                (lista[j][ItemInd::INDCODUSU] == lista[j + 1][ItemInd::INDCODUSU]) {
+            (lista[j][ItemInd::INDCODUSU] == lista[j + 1][ItemInd::INDCODUSU])) {
             swap(lista, j, j - 1);
         }
     }
 }
-
 
 
 void bubbleSort(vector<vector<dato>> &lista) {
@@ -220,9 +219,9 @@ void bubbleSort(vector<vector<dato>> &lista) {
 }
 
 void ordenarPorComponente(eph_h &th, eph_i &ti) {
-    for (int i=0; i < th.size(); i++){
-        for (int j=0; j < ti.size(); j++){
-            if (th[i][ItemHogar::HOGCODUSU] == ti[j][ItemInd::INDCODUSU]){
+    for (int i = 0; i < th.size(); i++) {
+        for (int j = 0; j < ti.size(); j++) {
+            if (th[i][ItemHogar::HOGCODUSU] == ti[j][ItemInd::INDCODUSU]) {
 
 
             }
@@ -236,12 +235,91 @@ void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
     return;
 }
 
+// AUXILIARES 8
+typedef pair<hogar, int> hogarIngresos;
+
+int ingresosDelHogar(hogar h, vector<individuo> inds) {
+    int suma = 0;
+    for (int i = 0; i < inds.size(); i++) {
+        if (esSuHogar(h, inds[i]) && inds[i][p47T] != -1) {
+            suma += inds[i][p47T];
+        }
+    }
+    return suma;
+}
+
+vector<hogarIngresos> crearTuplaHogarIngresos(vector<hogar> listaHogares, vector<individuo> listaIndividuos) {
+    vector<hogarIngresos> res = {};
+    for (int i = 0; i < listaHogares.size(); i++) {
+        hogarIngresos p = make_pair(listaHogares[i], ingresosDelHogar(listaHogares[i], listaIndividuos));
+        res.push_back(p);
+    }
+    return res;
+}
+
+void ordenarHogaresPorIngreso(vector<hogarIngresos> &vecHogarIngresos) {
+    for (int i = 0; i < vecHogarIngresos.size(); i++) {
+        for (int j = i; j < vecHogarIngresos.size() - 1; j++) {
+            if (vecHogarIngresos[j].second > vecHogarIngresos[j + 1].second) {
+                hogarIngresos temp = vecHogarIngresos[j];
+                vecHogarIngresos[j] = vecHogarIngresos[j + 1];
+                vecHogarIngresos[j + 1] = temp;
+            }
+        }
+    }
+}
+
+vector<hogar> listaConDiferencia(vector<hogarIngresos> vecHogarIngresos, int start, int first, int diferencia) {
+    vector<hogar> res = {};
+    res.push_back(vecHogarIngresos[start].first);
+    res.push_back(vecHogarIngresos[first].first);
+    int last = first;
+    for (int i = first + 1; i < vecHogarIngresos.size(); i++) { // Itero los hogares
+        // {1, 10}, {2, 15}, {3, 40}, {4, 45}, {5, 70}, {6, 80}, ...
+        int dif = vecHogarIngresos[i].second - vecHogarIngresos[last].second;
+        if (dif < diferencia) { // Si es más chico => Seguimos iterando
+            continue;
+        }
+        if (dif == diferencia) { // Si es igual => Sumamos 1 al largo y seguimos iterando
+            res.push_back(vecHogarIngresos[i].first);
+            last = i;
+        }
+        if (dif > diferencia) { // Si es más grande => Ya terminó
+            break;
+        }
+    }
+    return res;
+}
+
+vector<hogar> buscarMuestraHomogeneaMaxima(vector<hogarIngresos> vecHogarIngresos) {
+    vector<hogar> res;
+    int largoMaximo = 0;
+    for (int i = 0; i < vecHogarIngresos.size() - 1; i++) { // Iteramos por hogares
+        for (int j = i + 1; j < vecHogarIngresos.size(); j++) { // Vemos todas las posibles diferencias de ingresos
+            int diferencia = vecHogarIngresos[j].second - vecHogarIngresos[i].second;
+            vector<hogar> lista = listaConDiferencia(vecHogarIngresos, i, j, diferencia);
+            int largo = lista.size();
+            if (largo > largoMaximo) {
+                largoMaximo = largo;
+                res = lista;
+            }
+        }
+    }
+    if (largoMaximo < 3) {
+        return {};
+    }
+    return res;
+}
+
 // Implementacion Problema 8
 vector<hogar> muestraHomogenea(eph_h &th, eph_i &ti) {
     hogar h = {};
     vector<hogar> resp = {h};
 
     // TODO
+    vector<hogarIngresos> tmp = crearTuplaHogarIngresos(th, ti);
+    ordenarHogaresPorIngreso(tmp);
+    resp = buscarMuestraHomogeneaMaxima(tmp);
 
     return resp;
 }

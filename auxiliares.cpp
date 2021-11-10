@@ -12,24 +12,6 @@ bool esMatriz(vector<vector<dato>> t) {
     return true;
 }
 
-bool individuoEnTabla(individuo ind, eph_i ti) {
-    for (int i = 0; i < ti.size(); i++) {
-        if (ti[i] == ind) {
-            return true;
-        }
-    }
-    return false;
-}
-
-bool hogarEnTabla(hogar h, eph_h th) {
-    for (int i = 0; i < th.size(); i++) {
-        if (th[i] == h) {
-            return true;
-        }
-    }
-    return false;
-}
-
 bool esVacia(vector<vector<dato>> t) {
     return (t.size() == 0);
 }
