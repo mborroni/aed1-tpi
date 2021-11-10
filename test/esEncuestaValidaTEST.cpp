@@ -191,19 +191,19 @@ TEST(esEncuestaValidaTEST, validaAnioNegativo) {
     EXPECT_TRUE(esEncuestaValida(th, ti));
 }
 
-TEST(histHabitacionalTEST, validaeph2018_100) {
+TEST(esEncuestaValidaTEST, validaeph2018_100) {
     eph_h th;
     eph_i ti;
     leerEncuesta ( "eph_3c_2018_100", th, ti );
 
-    EXPECT_EQ( true, esEncuestaValida(th, ti) );
+    EXPECT_TRUE(esEncuestaValida(th, ti) );
 }
 
-TEST(histHabitacionalTEST, validaeph2020_100) {
+TEST(esEncuestaValidaTEST, validaeph2020_100) {
     eph_h th;
     eph_i ti;
     leerEncuesta ( "eph_3c_2020_100", th, ti );
 
-    EXPECT_EQ( true, esEncuestaValida(th, ti) );
+    EXPECT_TRUE(  esEncuestaValida(th, ti) );
 }
 

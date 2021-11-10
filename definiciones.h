@@ -51,6 +51,7 @@ enum ItemInd {
 #define CANTIDAD_DE_REGIONES 6
 
 #define CASA 1
+#define DEPARTAMENTO 2
 
 #define OCUPADO 1
 #define EN_ESTE_HOGAR 6

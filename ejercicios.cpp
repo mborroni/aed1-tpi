@@ -6,10 +6,8 @@
 using namespace std;
 
 // Implementacion Problema 1
-
 bool esEncuestaValida(eph_h th, eph_i ti) {
-    bool resp = esValida(th, ti);
-    return resp;
+    return esValida(th, ti);
 }
 
 // Implementacion Problema 2
@@ -20,14 +18,13 @@ vector<int> histHabitacional(eph_h th, eph_i ti, int region) {
 
     vector<int> resultado(maxHabitaciones, 0);
     for (int i = 0; i < hogaresEnRegion.size(); i++) {
-        resultado[hogaresEnRegion[i][ItemHogar::IV2] - 1]++;
+        resultado[hogaresEnRegion[i][IV2] - 1]++;
     }
     return resultado;
 }
 
 // Implementacion Problema 3
 vector<pair<int, float> > laCasaEstaQuedandoChica(eph_h th, eph_i ti) {
-
     vector<pair<int, float>> resp = {make_pair(1, 0.0),
                                      make_pair(40, 0.0),
                                      make_pair(41, 0.0),
@@ -35,37 +32,35 @@ vector<pair<int, float> > laCasaEstaQuedandoChica(eph_h th, eph_i ti) {
                                      make_pair(43, 0.0),
                                      make_pair(44, 0.0)};
 
-    int casasConHC = 0;
-    int hogaresValidos = 0;
+    float casasConHC = 0;
+    float hogaresValidos = 0;
 
-    for (int i = 1; i < resp.size(); i++) {
+    for (int i = 0; i < CANTIDAD_DE_REGIONES; i++) {
         for (int j = 0; j < th.size(); j++) {
-            if (th[j][ItemHogar::IV1] == 1 && th[j][ItemHogar::REGION] == resp[i].first &&
-                th[j][ItemHogar::MAS_500] == 0) {
+            if (th[j][IV1] == CASA &&
+                th[j][REGION] == resp[i].first &&
+                th[j][MAS_500] == 0) {
                 hogaresValidos++;
-                if (cantidadDeHabitantes(th[j], ti) > 3 * th[j][ItemHogar::II2]) {
+                if (cantidadDeHabitantes(th[j], ti) > 3 * th[j][II2]) {
                     casasConHC++;
-
                 }
-
             }
         }
         if (hogaresValidos > 0) {
             resp[i].second = casasConHC / hogaresValidos;
         }
     }
-
     return resp;
 }
 
 // Implementacion Problema 4
 bool trabaja(individuo i) {
-    return (i[ItemInd::ESTADO] == 1);
+    return (i[ESTADO] == OCUPADO);
 }
 
 bool esDeCiudadGrande(individuo i, eph_h th) {
     for (int j = 0; j < th.size(); j++) {
-        if (esSuHogar(th[j], i) && th[j][ItemHogar::MAS_500] == 1) {
+        if (esSuHogar(th[j], i) && th[j][MAS_500] == 1) {
             return true;
         }
     }
@@ -73,7 +68,7 @@ bool esDeCiudadGrande(individuo i, eph_h th) {
 }
 
 bool esCasaODepartamento(hogar h) {
-    return (h[ItemHogar::IV1] == 1 || h[ItemHogar::IV1] == 2);
+    return (h[IV1] == CASA || h[IV1] == DEPARTAMENTO);
 }
 
 bool suHogarEsCasaODepartamento(individuo i, eph_h th) {
@@ -91,11 +86,11 @@ bool individuoEnHogarValido(individuo i, eph_h th) {
 }
 
 bool realizaSusTareasEnEsteHogar(individuo i) {
-    return (i[ItemInd::PP04G] == 6);
+    return (i[PP04G] == 6);
 }
 
 bool tieneEspaciosReservadosParaElTrabajo(hogar h) {
-    return (h[ItemHogar::II3] == 1);
+    return (h[II3] == 1);
 }
 
 bool suHogarTieneEspaciosReservadosParaElTrabajo(individuo i, eph_h th) {
@@ -149,11 +144,11 @@ bool creceElTeleworkingEnCiudadesGrandes(eph_h t1h, eph_i t1i, eph_h t2h, eph_i 
 
 // Implementacion Problema 5
 bool tieneCasaPropia(hogar h) {
-    return (h[ItemHogar::II7] == 1);
+    return (h[II7] == 1);
 }
 
 bool tieneCasaChica(hogar h, eph_i ti) {
-    return ((cantidadDeHabitantes(h, ti) - 2) > h[ItemHogar::II2]);
+    return ((cantidadDeHabitantes(h, ti) - 2) > h[II2]);
 }
 
 int costoSubsidioMejora(eph_h th, eph_i ti, int monto) {
@@ -180,7 +175,7 @@ join_hi generarJoin(eph_h th, eph_i ti) {
 }
 
 // Implementacion Problema 7
-/*
+
 //bubble sort
 void swap(vector<vector<dato>> &lista, int i, int j) {
     vector<dato> k = lista[i];
@@ -188,12 +183,11 @@ void swap(vector<vector<dato>> &lista, int i, int j) {
     lista[j] = k;
 }
 
-
 void burbujeo(vector<vector<dato>> &lista, int i) {
     for (int j = lista.size() - 1; j > i; j--) {
-        if (lista[j][ItemHogar::REGION] < lista[j - 1][ItemHogar::REGION] ||
-            (lista[j][ItemHogar::REGION] == lista[j - 1][ItemHogar::REGION] &&
-             lista[j][ItemHogar::HOGCODUSU] < lista[j - 1][ItemHogar::HOGCODUSU])) {
+        if (lista[j][REGION] < lista[j - 1][REGION] ||
+            (lista[j][REGION] == lista[j - 1][REGION] &&
+             lista[j][HOGCODUSU] < lista[j - 1][HOGCODUSU])) {
             swap(lista, j, j - 1);
         }
     }
@@ -206,20 +200,37 @@ void bubbleSort(vector<vector<dato>> &lista) {
     return;
 }
 
-void ordenarPorComponente(eph_h &th, eph_i &ti) {
-    for (int i = 0; i < th.size(); i++) {
-        for (int j = 0; j < ti.size(); j++) {
-            if (th[i][ItemHogar::HOGCODUSU] == ti[j][ItemInd::INDCODUSU]) {
-
-
+void ordenarIndividuosPorComponente(eph_i &ti) {
+    for(int i = 0; i < ti.size(); i++) {
+        for(int j = i+1; j < ti.size() - 1; j++) {
+            if(ti[j][COMPONENTE] < ti[i][COMPONENTE]) {
+                swap(ti, i, j);
             }
-
         }
     }
 }
-*/
-void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
 
+void ordenarIndividuosPorHogar(eph_h &th, eph_i &ti) {
+    vector<individuo> res = {};
+    for(int i = 0; i < th.size(); i++) {
+        vector<individuo> indsDeLaCasa = {};
+        for(int j = 0; j < ti.size(); j++) {
+            if(esSuHogar(th[i], ti[j])) {
+                indsDeLaCasa.push_back(ti[j]);
+            }
+        }
+        for(int j = 0; j < indsDeLaCasa.size(); j++) {
+            res.push_back(indsDeLaCasa[i]);
+        }
+    }
+    ti = res;
+}
+
+void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
+    bubbleSort(th);
+
+    ordenarIndividuosPorHogar(th, ti);
+    ordenarIndividuosPorComponente(ti);
     return;
 }
 
@@ -262,17 +273,16 @@ vector<hogar> listaConDiferencia(vector<hogarIngresos> vecHogarIngresos, int sta
     res.push_back(vecHogarIngresos[start].first);
     res.push_back(vecHogarIngresos[first].first);
     int last = first;
-    for (int i = first + 1; i < vecHogarIngresos.size(); i++) { // Itero los hogares
-        // {1, 10}, {2, 15}, {3, 40}, {4, 45}, {5, 70}, {6, 80}, ...
+    for (int i = first + 1; i < vecHogarIngresos.size(); i++) {
         int dif = vecHogarIngresos[i].second - vecHogarIngresos[last].second;
-        if (dif < diferencia) { // Si es más chico => Seguimos iterando
+        if (dif < diferencia) {
             continue;
         }
-        if (dif == diferencia) { // Si es igual => Sumamos 1 al largo y seguimos iterando
+        if (dif == diferencia) {
             res.push_back(vecHogarIngresos[i].first);
             last = i;
         }
-        if (dif > diferencia) { // Si es más grande => Ya terminó
+        if (dif > diferencia) {
             break;
         }
     }
@@ -282,7 +292,7 @@ vector<hogar> listaConDiferencia(vector<hogarIngresos> vecHogarIngresos, int sta
 vector<hogar> buscarMuestraHomogeneaMaxima(vector<hogarIngresos> vecHogarIngresos) {
     vector<hogar> res;
     int largoMaximo = 0;
-    for (int i = 0; i < vecHogarIngresos.size() - 1; i++) { // Iteramos por hogares
+    for (int i = 0; i < vecHogarIngresos.size() - 1; i++) {
         for (int j = i + 1; j < vecHogarIngresos.size(); j++) { // Vemos todas las posibles diferencias de ingresos
             int diferencia = vecHogarIngresos[j].second - vecHogarIngresos[i].second;
             vector<hogar> lista = listaConDiferencia(vecHogarIngresos, i, j, diferencia);
@@ -301,22 +311,17 @@ vector<hogar> buscarMuestraHomogeneaMaxima(vector<hogarIngresos> vecHogarIngreso
 
 // Implementacion Problema 8
 vector<hogar> muestraHomogenea(eph_h &th, eph_i &ti) {
-    hogar h = {};
-    vector<hogar> resp = {h};
-
-    // TODO
     vector<hogarIngresos> tmp = crearTuplaHogarIngresos(th, ti);
     ordenarHogaresPorIngreso(tmp);
-    resp = buscarMuestraHomogeneaMaxima(tmp);
-
+    vector<hogar> resp = buscarMuestraHomogeneaMaxima(tmp);
     return resp;
 }
 
 // Implementacion Problema 9
 void corregirRegion(eph_h &th, eph_i ti) {
     for (int i = 0; i < th.size(); i++) {
-        if (th[i][ItemHogar::REGION] == GBA) {
-            th[i][ItemHogar::REGION] = PAMPEANA;
+        if (th[i][REGION] == GBA) {
+            th[i][REGION] = PAMPEANA;
         }
     }
 }
@@ -327,7 +332,7 @@ float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud) {
 }
 
 bool hogarEnAnillo(hogar hogar, int desde, int hasta, pair<int, int> centro) {
-    float distancia = distanciaEuclideana(centro, hogar[ItemHogar::HOGLATITUD], hogar[ItemHogar::HOGLONGITUD]);
+    float distancia = distanciaEuclideana(centro, hogar[HOGLATITUD], hogar[HOGLONGITUD]);
     return float(desde) < distancia && distancia <= float(hasta);
 }
 

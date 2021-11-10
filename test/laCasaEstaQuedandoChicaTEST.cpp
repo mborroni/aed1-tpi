@@ -48,6 +48,8 @@ TEST(laCasaEstaQuedandoChicaTEST, hacinamientoCriticoTodosIgualAUno) {
                 {22112, 2020,   4,  0,  3,  1,  18, 0,  0,  20000,  10}
     };
 
+    EXPECT_TRUE(esEncuestaValida(th, ti));
+
     vector<pair<int,float>> esperado = {make_pair(1,1.0),
                                         make_pair(40, 1.0),
                                         make_pair(41, 1.0),
@@ -59,7 +61,7 @@ TEST(laCasaEstaQuedandoChicaTEST, hacinamientoCriticoTodosIgualAUno) {
     int i=0;
     while( i < 6 ) {
         EXPECT_EQ( esperado[i].first, resultado[i].first );
-        EXPECT_EQ( true, flotante_valido(esperado[i].second, resultado[i].second, UMBRAL) );
+        EXPECT_TRUE(flotante_valido(esperado[i].second, resultado[i].second, UMBRAL) );
         i++;
     }
 }

@@ -9,10 +9,10 @@
 using namespace std;
 
 TEST(muestraHomogeneaTEST, unaSolucionDe4) {
-    vector <hogar> res = {{2354, 2018, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1},
-                          {1,    2018, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1},
-                          {4377, 2018, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1},
-                          {340,  2018, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1}};
+    vector <hogar> esperado = {{2354, 2018, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1},
+                               {1,    2018, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1},
+                               {4377, 2018, 1, 1, 2, 1, 1, 1, 1, 2, 1, 1},
+                               {340,  2018, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1}};
     eph_h th = {
             {960,  2018, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1},
             {340,  2018, 1, 1, 1, 1, 1, 1, 1, 2, 1, 1},
@@ -43,7 +43,15 @@ TEST(muestraHomogeneaTEST, unaSolucionDe4) {
                 {960,   2018, 2, 1, 1, 2, 51, 1,  4, 0,  1},
                 {960,   2018, 1, 1, 1, 2, 51, 1,  4, 0,  1}
     };
-    EXPECT_EQ(res,muestraHomogenea(th,ti));
+    EXPECT_TRUE(esEncuestaValida(th, ti));
+
+    vector <hogar> res = muestraHomogenea(th,ti);
+
+    // uso sort para independizar el orden
+    sort(esperado.begin(),esperado.end());
+    sort(res.begin(), res.end());
+
+    EXPECT_EQ(res,esperado);
 }
 
 
@@ -87,7 +95,15 @@ TEST(muestraHomogeneaTEST, dosSolucionesDe3) {
                 {960,  2018, 3, 1, 1, 2, 51, 1,  4, 0,   1}, // 0
                 {960,  2018, 2, 1, 1, 2, 51, 1,  4, 0,   1},
                 {960,  2018, 1, 1, 1, 2, 51, 1,  4, 0,   1}};
+    EXPECT_TRUE(esEncuestaValida(th, ti));
+
     vector <hogar> propuesto = muestraHomogenea(th,ti);
+
+    // uso del sort para independizar el orden
+    sort(propuesto.begin(), propuesto.end());
+    sort(res1.begin(), res1.end());
+    sort(res2.begin(), res2.end());
+
     bool esperado = res1 == propuesto || res2 == propuesto;
-    EXPECT_EQ(true,esperado);
+    EXPECT_TRUE(esperado);
 }

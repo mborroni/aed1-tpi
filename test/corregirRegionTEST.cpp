@@ -35,11 +35,18 @@ TEST(corregirRegionTEST, cuatroHogares) {
 //                                                            Región
 //                                                             v
     eph_h esperado = {{22114, 2020,   3,  319611, 629088, 3,  43, 0,  1,  3,  1,  2},
-                      {31117, 2020,   3,  332870, 642475, 3,  43, 0,  1,  6,  6,  2},
                       {22866, 2020,   3,  317157, 627217, 2,  42, 1,  1,  2,  2,  2},
+                      {31117, 2020,   3,  332870, 642475, 3,  43, 0,  1,  6,  6,  2},
                       {20957, 2020,   3,  313965, 623297, 1,  43, 0,  1,  3,  1,  2}};
 
     ASSERT_TRUE(esEncuestaValida(th,ti));
+    ASSERT_TRUE(esEncuestaValida(esperado,ti));
+
     corregirRegion(th, ti);
+
+    // uso del sort para independizar las salidas del orden
+    sort(th.begin(), th.end());
+    sort(esperado.begin(), esperado.end());
+
     EXPECT_EQ( th, esperado );
 }

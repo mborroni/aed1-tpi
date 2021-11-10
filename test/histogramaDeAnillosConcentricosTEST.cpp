@@ -17,13 +17,15 @@ TEST(histogramaDeAnillosConcentricosTEST, primeroYUltimo) {
     pair<int, int> centro = {0, 0};
 
     pair<eph_h, eph_i> p = encuesta_prueba({
-        {1, 1},     // 1.41
-        {3, 5},     // 5.83
-        {53, 5},    // 52.24
-        {101, 21},  // 103.16
-    });
+                                                   {1, 1},     // 1.41
+                                                   {3, 5},     // 5.83
+                                                   {53, 5},    // 52.24
+                                                   {101, 21},  // 103.16
+                                           });
 
     vector<int> res = {2, 0, 0, 1};
+
+    EXPECT_TRUE(esEncuestaValida(p.first, p.second));
 
     EXPECT_EQ(res, histogramaDeAnillosConcentricos(p.first, p.second, centro, distancias));
 }
@@ -35,11 +37,12 @@ TEST(histogramaDeAnillosConcentricosTEST, cuatroCuadrantes) {
     pair<int, int> centro = {0, 0};
 
     pair<eph_h, eph_i> p = encuesta_prueba({
-        {11, 11},
-        {-11, -11},
-        {-11, 11},
-        {11, -11}
-    });
+                                                   {11, 11},
+                                                   {-11, -11},
+                                                   {-11, 11},
+                                                   {11, -11}
+                                           });
+    EXPECT_TRUE(esEncuestaValida(p.first, p.second));
 
     vector<int> res = {0, 4, 0, 0};
 

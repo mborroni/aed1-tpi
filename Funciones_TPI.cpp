@@ -13,7 +13,7 @@
 using namespace std;
 
 bool flotante_valido(float valor_esperado, float valor_recibido, float umbral) {
-  return abs(valor_esperado - valor_recibido) < umbral;\
+  return abs(valor_esperado - valor_recibido) < umbral;
 }
 
 
