@@ -201,11 +201,34 @@ void burbujeo(vector<vector<dato>> &lista, int i) {
     }
 }
 
+void burbujeoInd (vector<vector<dato>> &lista, int i) {
+    for (int j = lista.size() - 1; j > i; j--) {
+        if (lista[j][ItemInd::INDCODUSU] > lista[j + 1][ItemInd::INDCODUSU] ||
+                (lista[j][ItemInd::INDCODUSU] == lista[j + 1][ItemInd::INDCODUSU]) {
+            swap(lista, j, j - 1);
+        }
+    }
+}
+
+
+
 void bubbleSort(vector<vector<dato>> &lista) {
     for (int i = 0; i < lista.size(); i++) {
         burbujeo(lista, i);
     }
     return;
+}
+
+void ordenarPorComponente(eph_h &th, eph_i &ti) {
+    for (int i=0; i < th.size(); i++){
+        for (int j=0; j < ti.size(); j++){
+            if (th[i][ItemHogar::HOGCODUSU] == ti[j][ItemInd::INDCODUSU]){
+
+
+            }
+
+        }
+    }
 }
 
 void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
