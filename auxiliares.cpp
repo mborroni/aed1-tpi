@@ -13,7 +13,7 @@ bool esMatriz(vector<vector<dato>> t) {
 }
 
 bool esVacia(vector<vector<dato>> t) {
-    return (t.size() == 0);
+    return t.empty();
 }
 
 bool cantidadCorrectaDeColumnasI(eph_i ti) {
@@ -35,12 +35,13 @@ bool cantidadCorrectaDeColumnasH(eph_h th) {
 }
 
 bool hayIndividuoConCodigo(eph_i ti, int codigo) {
+    bool existe = false;
     for (int j = 0; j < ti.size(); j++) {
         if (codigo == ti[j][ItemInd::INDCODUSU]) {
-            return true;
+            existe = true;
         }
     }
-    return false;
+    return existe;
 }
 
 bool hayHogarConCodigo(eph_h th, int codigo) {
@@ -96,7 +97,7 @@ bool hayRepetidosH(eph_h th) {
     return false;
 }
 
-bool mismoAnioYTrimestreI(eph_i ti, int anio, int trimestre) {
+bool mismoAnioYTrimestreI(eph_i &ti, int anio, int trimestre) {
     for (int i = 0; i < ti.size(); i++) {
         if (ti[i][ItemInd::INDTRIMESTRE] != trimestre || ti[i][ItemInd::INDANIO] != anio) {
             return false;
@@ -105,7 +106,7 @@ bool mismoAnioYTrimestreI(eph_i ti, int anio, int trimestre) {
     return true;
 }
 
-bool mismoAnioYTrimestreH(eph_h th, int anio, int trimestre) {
+bool mismoAnioYTrimestreH(eph_h &th, int anio, int trimestre) {
     for (int i = 0; i < th.size(); i++) {
         if (th[i][ItemHogar::HOGTRIMESTRE] != trimestre || th[i][ItemHogar::HOGANIO] != anio) {
             return false;
@@ -117,7 +118,7 @@ bool mismoAnioYTrimestreH(eph_h th, int anio, int trimestre) {
 bool mismoAnioYTrimestre(eph_i ti, eph_h th) {
     int anio = ti[0][ItemInd::INDANIO];
     int trimestre = ti[0][ItemInd::INDTRIMESTRE];
-    return (mismoAnioYTrimestreI(ti, anio, trimestre) && mismoAnioYTrimestreH(th, anio, trimestre));
+    return mismoAnioYTrimestreI(ti, anio, trimestre) && mismoAnioYTrimestreH(th, anio, trimestre);
 }
 
 bool esSuHogar(hogar h, individuo i) {
@@ -215,9 +216,6 @@ int obtenerMaximoHabitacionesEnRegion(eph_h &th, int region) {
     return maxHabitaciones;
 }
 
-// auxiliares ejercicio 3
-
-
 // auxiliares ejercicio 4
 bool trabaja(individuo i) {
     return (i[ESTADO] == OCUPADO);
@@ -246,16 +244,15 @@ bool suHogarEsCasaODepartamento(individuo i, eph_h th) {
 }
 
 bool individuoEnHogarValido(individuo i, eph_h th) {
-    bool res = (esDeCiudadGrande(i, th) && suHogarEsCasaODepartamento(i, th));
-    return (res);
+    return esDeCiudadGrande(i, th) && suHogarEsCasaODepartamento(i, th);
 }
 
 bool realizaSusTareasEnEsteHogar(individuo i) {
-    return (i[PP04G] == 6);
+    return i[PP04G] == EN_ESTE_HOGAR;
 }
 
 bool tieneEspaciosReservadosParaElTrabajo(hogar h) {
-    return (h[II3] == 1);
+    return h[II3] == 1;
 }
 
 bool suHogarTieneEspaciosReservadosParaElTrabajo(individuo i, eph_h th) {
@@ -269,7 +266,7 @@ bool suHogarTieneEspaciosReservadosParaElTrabajo(individuo i, eph_h th) {
 
 
 bool trabajaEnSuVivienda(individuo i, eph_h th) {
-    return (realizaSusTareasEnEsteHogar(i) && suHogarTieneEspaciosReservadosParaElTrabajo(i, th));
+    return realizaSusTareasEnEsteHogar(i) && suHogarTieneEspaciosReservadosParaElTrabajo(i, th);
 }
 
 int cantIndividuosQueTrabajan(eph_h th, eph_i ti) {
@@ -294,11 +291,9 @@ int cantIndividuosTrabajandoEnSuVivienda(eph_h th, eph_i ti) {
 
 float proporcionTeleworking(eph_h th, eph_i ti) {
     if (cantIndividuosQueTrabajan(th, ti) > 0) {
-        float res = float(cantIndividuosTrabajandoEnSuVivienda(th, ti)) / float(cantIndividuosQueTrabajan(th, ti));
-        return (res);
-    } else {
-        return 0;
+        return float(cantIndividuosTrabajandoEnSuVivienda(th, ti)) / float(cantIndividuosQueTrabajan(th, ti));
     }
+    return 0;
 }
 
 // auxiliares ejercicio 5
@@ -307,12 +302,8 @@ bool tieneCasaPropia(hogar h) {
 }
 
 bool tieneCasaChica(hogar h, eph_i ti) {
-    return ((cantidadDeHabitantes(h, ti) - 2) > h[II2]);
+    return cantidadDeHabitantes(h, ti) - 2 > h[II2];
 }
-
-// auxiliares ejercicio 6
-
-// auxiliares ejercicio 7
 
 // auxiliares ejercicio 8
 int ingresosDelHogar(hogar h, vector<individuo> inds) {

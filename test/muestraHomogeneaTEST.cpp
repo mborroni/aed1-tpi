@@ -107,3 +107,21 @@ TEST(muestraHomogeneaTEST, dosSolucionesDe3) {
     bool esperado = res1 == propuesto || res2 == propuesto;
     EXPECT_TRUE(esperado);
 }
+
+TEST(muestraHomogeneaTEST, ningunaSolucionMayorA3) {
+    eph_h th = {
+            {960,  2018, 1, 1, 1, 1, 1, 1, 1, 2,1,1},
+            {1009, 2018, 1, 1, 2, 1, 1, 1, 1, 2,1,1},
+    };
+
+    eph_i ti = {{1009, 2018, 1, 1, 1, 1, 36, 1,  3, 26,  1}, // 26
+                {960,  2018, 3, 1, 1, 2, 51, 1,  4, 0,   1}, // 0
+                {960,  2018, 2, 1, 1, 2, 51, 1,  4, 0,   1},
+                {960,  2018, 1, 1, 1, 2, 51, 1,  4, 0,   1}};
+    EXPECT_TRUE(esEncuestaValida(th, ti));
+
+    vector<hogar> propuesto = muestraHomogenea(th,ti);
+
+    vector<hogar> esperado = {};
+    EXPECT_TRUE(esperado == propuesto);
+}

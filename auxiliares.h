@@ -5,15 +5,7 @@
 
 bool esMatriz(vector<vector<dato>> t);
 
-bool individuoEnTabla(individuo ind, eph_i ti);
-
-bool hogarEnTabla(hogar h, eph_h th);
-
 bool esVacia(vector<vector<dato>> t);
-
-int cantidadItemsIndividuo();
-
-int cantidadItemsHogar();
 
 bool cantidadCorrectaDeColumnasI(eph_i ti);
 
@@ -33,9 +25,9 @@ bool hayRepetidosI(eph_i ti);
 
 bool hayRepetidosH(eph_h th);
 
-bool mismoAnioYTrimestreI(eph_i ti, int anio, int trimestre);
+bool mismoAnioYTrimestreI(eph_i &ti, int anio, int trimestre);
 
-bool mismoAnioYTrimestreH(eph_h th, int anio, int trimestre);
+bool mismoAnioYTrimestreH(eph_h &th, int anio, int trimestre);
 
 bool mismoAnioYTrimestre(eph_i ti, eph_h th);
 

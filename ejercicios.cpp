@@ -1,7 +1,6 @@
 #include "ejercicios.h"
 #include "auxiliares.h"
 #include "definiciones.h"
-#include <math.h>
 
 using namespace std;
 
@@ -54,9 +53,7 @@ vector<pair<int, float> > laCasaEstaQuedandoChica(eph_h th, eph_i ti) {
 
 // Implementacion Problema 4
 bool creceElTeleworkingEnCiudadesGrandes(eph_h t1h, eph_i t1i, eph_h t2h, eph_i t2i) {
-    bool resp = false;
-    resp = (proporcionTeleworking(t2h, t2i) > proporcionTeleworking(t1h, t1i));
-    return resp;
+    return proporcionTeleworking(t2h, t2i) > proporcionTeleworking(t1h, t1i);
 }
 
 // Implementacion Problema 5
@@ -84,8 +81,6 @@ join_hi generarJoin(eph_h th, eph_i ti) {
 }
 
 // Implementacion Problema 7
-
-//bubble sort
 void swap(vector<vector<dato>> &lista, int i, int j) {
     vector<dato> k = lista[i];
     lista[i] = lista[j];
@@ -106,13 +101,12 @@ void bubbleSort(vector<vector<dato>> &lista) {
     for (int i = 0; i < lista.size(); i++) {
         burbujeo(lista, i);
     }
-    return;
 }
 
 void ordenarIndividuosPorComponente(eph_i &ti) {
-    for(int i = 0; i < ti.size(); i++) {
-        for(int j = i+1; j < ti.size() - 1; j++) {
-            if(ti[j][COMPONENTE] < ti[i][COMPONENTE]) {
+    for (int i = 0; i < ti.size(); i++) {
+        for (int j = i + 1; j < ti.size() - 1; j++) {
+            if (ti[j][COMPONENTE] < ti[i][COMPONENTE]) {
                 swap(ti, i, j);
             }
         }
@@ -121,15 +115,15 @@ void ordenarIndividuosPorComponente(eph_i &ti) {
 
 void ordenarIndividuosPorHogar(eph_h &th, eph_i &ti) {
     vector<individuo> res = {};
-    for(int i = 0; i < th.size(); i++) {
+    for (int i = 0; i < th.size(); i++) {
         vector<individuo> indsDeLaCasa = {};
-        for(int j = 0; j < ti.size(); j++) {
-            if(esSuHogar(th[i], ti[j])) {
+        for (int j = 0; j < ti.size(); j++) {
+            if (esSuHogar(th[i], ti[j])) {
                 indsDeLaCasa.push_back(ti[j]);
             }
         }
-        for(int j = 0; j < indsDeLaCasa.size(); j++) {
-            res.push_back(indsDeLaCasa[i]);
+        for (int j = 0; j < indsDeLaCasa.size(); j++) {
+            res.push_back(indsDeLaCasa[j]);
         }
     }
     ti = res;
@@ -138,9 +132,8 @@ void ordenarIndividuosPorHogar(eph_h &th, eph_i &ti) {
 void ordenarRegionYCODUSU(eph_h &th, eph_i &ti) {
     bubbleSort(th);
 
-    ordenarIndividuosPorHogar(th, ti);
     ordenarIndividuosPorComponente(ti);
-    return;
+    ordenarIndividuosPorHogar(th, ti);
 }
 
 // Implementacion Problema 8

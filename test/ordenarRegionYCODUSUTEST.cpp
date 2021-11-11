@@ -57,5 +57,4 @@ TEST(ordenarRegionYCODUSUTEST, regionesDistintas) {
     ordenarRegionYCODUSU(th, ti);
     EXPECT_EQ(th_esperado, th);
     EXPECT_EQ(ti_esperado, ti);
-
 }

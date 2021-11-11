@@ -82,3 +82,32 @@ TEST(costoSubsidioMejoraTEST, casoFacil) {
 
     EXPECT_EQ(2 * monto, res);
 }
+
+TEST(costoSubsidioMejoraTEST, tieneCasaChica) {
+    hogar h = {188, 2018, 3, 325187, 635309, 1, 40, 0, 1, 3, 2, 2};       // propia, no alcanzan
+
+    eph_i ti = {
+            {188, 2018, 1, 0, 3, 2, 60, 0, 0, 6000, 10},
+            {188, 2018, 2, 0, 3, 1, 71, 0, 0, 7000, 10},
+            {188, 2018, 3, 0, 3, 1, 39, 1, 2, 2000, 9},
+            {188, 2018, 4, 0, 3, 1, 36, 0, 0, 0,    10},
+            {188, 2018, 5, 0, 3, 1, 29, 1, 2, 1000, 8},
+            {188, 2018, 6, 0, 3, 1, 10, 0, 0, 0,    10},
+    };
+    int res = tieneCasaChica(h, ti);
+    EXPECT_TRUE(res);
+}
+
+TEST(costoSubsidioMejoraTEST, noTieneCasaChica) {
+    hogar h =
+            {11867, 2018, 3, 320329, 630940, 1, 43, 1, 1, 3, 2, 2};     // propia, alcanzan
+
+
+    eph_i ti = {
+            {11867, 2018, 2, 1, 3, 1, 26, 1, 3, 21000, 1},
+            {11867, 2018, 3, 0, 3, 2, 22, 0, 2, 20000, 10},
+    };
+
+    int res = tieneCasaChica(h, ti);
+    EXPECT_FALSE(res);
+}
