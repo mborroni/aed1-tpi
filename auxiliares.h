@@ -59,8 +59,56 @@ bool valoresEnRangoH(eph_h th);
 
 bool esValida(eph_h th, eph_i ti);
 
-eph_h obtenerCasasEnRegion(eph_h th, int region);
+int obtenerMaximoHabitacionesEnRegion(eph_h &th, int region);
 
-int obtenerMaximoHabitaciones(eph_h &hogares);
+bool trabaja(individuo i);
+
+bool esDeCiudadGrande(individuo i, eph_h th);
+
+bool esCasaODepartamento(hogar h);
+
+bool suHogarEsCasaODepartamento(individuo i, eph_h th);
+
+bool individuoEnHogarValido(individuo i, eph_h th);
+
+bool realizaSusTareasEnEsteHogar(individuo i);
+
+bool tieneEspaciosReservadosParaElTrabajo(hogar h);
+
+bool suHogarTieneEspaciosReservadosParaElTrabajo(individuo i, eph_h th);
+
+bool trabajaEnSuVivienda(individuo i, eph_h th);
+
+int cantIndividuosQueTrabajan(eph_h th, eph_i ti);
+
+int cantIndividuosTrabajandoEnSuVivienda(eph_h th, eph_i ti);
+
+float proporcionTeleworking(eph_h th, eph_i ti);
+
+bool tieneCasaPropia(hogar h);
+
+bool tieneCasaChica(hogar h, eph_i ti);
+
+int ingresosDelHogar(hogar h, vector<individuo> inds);
+
+vector<hogarIngresos> crearTuplaHogarIngresos(vector<hogar> listaHogares, vector<individuo> listaIndividuos);
+
+void ordenarHogaresPorIngreso(vector<hogarIngresos> &vecHogarIngresos);
+
+vector<hogar> listaConDiferencia(vector<hogarIngresos> vecHogarIngresos, int start, int first, int diferencia);
+
+vector<hogar> buscarMuestraHomogeneaMaxima(vector<hogarIngresos> vecHogarIngresos);
+
+float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud);
+
+bool hogarEnAnillo(hogar hogar, int desde, int hasta, pair<int, int> centro);
+
+int cantidadDeHogaresEnAnillo(eph_h th, int desde, int hasta, pair<int, int> centro);
+
+bool cumpleBusqueda(individuo individuo, vector<pair<int, dato>> busqueda);
+
+int indiceEnTablaHogares(int codusu, eph_h th);
+
+void eliminarHogaresSinIndividuos(eph_i &ti, eph_h &th);
 
 #endif //SOLUCION_AUXILIARES_H

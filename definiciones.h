@@ -65,5 +65,6 @@ typedef vector<individuo> eph_i;
 typedef vector<hogar> eph_h;
 typedef pair<hogar, individuo> par_hi;
 typedef vector<par_hi> join_hi;
+typedef pair<hogar, int> hogarIngresos;
 
 #endif //UTILES_DEFINICIONES_H
