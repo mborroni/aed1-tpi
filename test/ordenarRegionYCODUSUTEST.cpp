@@ -15,6 +15,8 @@ TEST(ordenarRegionYCODUSUTEST, regionesDistintas) {
                 {22866, 2020,   3,  317157, 627217, 2,  1, 1,  1,  2,  2,  2},
                 {20957, 2020,   3,  313965, 623297, 1,  40, 0,  1,  3,  1,  2}};
 
+    // Orden esperado: 22866, 20957, 31117, 22114
+
     eph_i ti = {{20957, 2020,   1,  1,  3,  1,  88, 0,  0,  90000,  10},
                 {31117, 2020,   1,  0,   3,  1,  58, 1,  3,  22000,  1},
                 {31117, 2020,   2,  0,  3,  2,  54, 1,  1,  -1,     1},
@@ -57,4 +59,23 @@ TEST(ordenarRegionYCODUSUTEST, regionesDistintas) {
     ordenarRegionYCODUSU(th, ti);
     EXPECT_EQ(th_esperado, th);
     EXPECT_EQ(ti_esperado, ti);
+}
+
+TEST(ordenarRegionYCODUSUTEST, unSoloHogarYDosIndividuosComponenteDesordenado) {
+    //                               Componente
+    //                                   v
+    eph_i ti_esperado = {{22114, 2020,   1,  0,  3,  1,  18, 0,  0,  20000,  10},
+                         {22114, 2020,   2,  0,  3,  1,  18, 0,  0,  20000,  10}};
+
+    eph_h th = {{22114, 2020,   3,  319611, 629088, 3,  41, 0,  1,  3,  1,  2}};
+    eph_h th_esperado = th;
+    eph_i ti = {ti_esperado[1], ti_esperado[0]};
+
+    ASSERT_TRUE(esEncuestaValida(th,ti));
+    ASSERT_TRUE(esEncuestaValida(th_esperado,ti_esperado));
+
+    ordenarRegionYCODUSU(th, ti);
+    EXPECT_EQ(th_esperado, th);
+    EXPECT_EQ(ti_esperado, ti);
+
 }

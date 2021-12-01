@@ -182,7 +182,7 @@ bool hogarValido(hogar h) {
             h[ItemHogar::HOGTRIMESTRE] <= 4 &&
             h[ItemHogar::II7] > 0 && h[ItemHogar::II7] <= 3 &&
             valorRegionValido(h[ItemHogar::REGION])
-            && (h[ItemHogar::MAS_500] == 0 || h[ItemHogar::MAS_500 == 1]) && h[ItemHogar::IV1] > 0 &&
+            && (h[ItemHogar::MAS_500] == 0 || h[ItemHogar::MAS_500] == 1) && h[ItemHogar::IV1] > 0 &&
             h[ItemHogar::IV1] <= 5
             && h[ItemHogar::IV2] > 0 && h[ItemHogar::II2] >= 1 && (h[ItemHogar::II3] == 1 || h[ItemHogar::II3] == 2));
 }
@@ -194,15 +194,6 @@ bool valoresEnRangoH(eph_h th) {
         }
     }
     return true;
-}
-
-bool esValida(eph_h th, eph_i ti) {
-    return (!esVacia(ti) && !esVacia(th) && esMatriz(ti) && esMatriz(th)
-            && cantidadCorrectaDeColumnasI(ti) && cantidadCorrectaDeColumnasH(th)
-            && !hayIndividuosSinHogares(ti, th) && !hayHogaresSinIndividuos(ti, th)
-            && !hayRepetidosI(ti) && !hayRepetidosH(th) && mismoAnioYTrimestre(ti, th)
-            && menosDe21MiembrosPorHogar(th, ti) && cantidadValidaDormitorios(th)
-            && valoresEnRangoI(ti) && valoresEnRangoH(th));
 }
 
 // auxiliares ejercicio 2
@@ -305,6 +296,55 @@ bool tieneCasaChica(hogar h, eph_i ti) {
     return cantidadDeHabitantes(h, ti) - 2 > h[II2];
 }
 
+// auxiliares ejercicio 7
+void swap(vector<vector<dato>> &lista, int i, int j) {
+    vector<dato> k = lista[i];
+    lista[i] = lista[j];
+    lista[j] = k;
+}
+
+void burbujeo(vector<vector<dato>> &lista, int i) {
+    for (int j = lista.size() - 1; j > i; j--) {
+        if (lista[j][REGION] < lista[j - 1][REGION] ||
+            (lista[j][REGION] == lista[j - 1][REGION] &&
+             lista[j][HOGCODUSU] < lista[j - 1][HOGCODUSU])) {
+            swap(lista, j, j - 1);
+        }
+    }
+}
+
+void ordenarHogaresPorRegionYCODUSU(vector<vector<dato>> &lista) {
+    for (int i = 0; i < lista.size(); i++) {
+        burbujeo(lista, i);
+    }
+}
+
+void ordenarIndividuosPorComponente(eph_i &ti) {
+    for (int i = 0; i < ti.size(); i++) {
+        for (int j = i + 1; j <= ti.size() - 1; j++) {
+            if ((ti[j][COMPONENTE] < ti[i][COMPONENTE]) && (ti[j][INDCODUSU]==ti[i][INDCODUSU])) {
+                swap(ti, i, j);
+            }
+        }
+    }
+}
+
+void ordenarIndividuosPorHogar(eph_h &th, eph_i &ti) {
+    vector<individuo> res = {};
+    for (int i = 0; i < th.size(); i++) {
+        vector<individuo> indsDeLaCasa = {};
+        for (int j = 0; j < ti.size(); j++) {
+            if (esSuHogar(th[i], ti[j])) {
+                indsDeLaCasa.push_back(ti[j]);
+            }
+        }
+        for (int j = 0; j < indsDeLaCasa.size(); j++) {
+            res.push_back(indsDeLaCasa[j]);
+        }
+    }
+    ti = res;
+}
+
 // auxiliares ejercicio 8
 int ingresosDelHogar(hogar h, vector<individuo> inds) {
     int suma = 0;
@@ -327,11 +367,11 @@ vector<hogarIngresos> crearTuplaHogarIngresos(vector<hogar> listaHogares, vector
 
 void ordenarHogaresPorIngreso(vector<hogarIngresos> &vecHogarIngresos) {
     for (int i = 0; i < vecHogarIngresos.size(); i++) {
-        for (int j = i; j < vecHogarIngresos.size() - 1; j++) {
-            if (vecHogarIngresos[j].second > vecHogarIngresos[j + 1].second) {
+        for (int j = i + 1; j <= vecHogarIngresos.size() - 1; j++) {
+            if (vecHogarIngresos[j].second < vecHogarIngresos[i].second) {
                 hogarIngresos temp = vecHogarIngresos[j];
-                vecHogarIngresos[j] = vecHogarIngresos[j + 1];
-                vecHogarIngresos[j + 1] = temp;
+                vecHogarIngresos[j] = vecHogarIngresos[i];
+                vecHogarIngresos[i] = temp;
             }
         }
     }
@@ -350,6 +390,7 @@ vector<hogar> listaConDiferencia(vector<hogarIngresos> vecHogarIngresos, int sta
         if (dif == diferencia) {
             res.push_back(vecHogarIngresos[i].first);
             last = i;
+            continue;
         }
         if (dif > diferencia) {
             break;
@@ -364,11 +405,13 @@ vector<hogar> buscarMuestraHomogeneaMaxima(vector<hogarIngresos> vecHogarIngreso
     for (int i = 0; i < vecHogarIngresos.size() - 1; i++) {
         for (int j = i + 1; j < vecHogarIngresos.size(); j++) { // Vemos todas las posibles diferencias de ingresos
             int diferencia = vecHogarIngresos[j].second - vecHogarIngresos[i].second;
-            vector<hogar> lista = listaConDiferencia(vecHogarIngresos, i, j, diferencia);
-            int largo = lista.size();
-            if (largo > largoMaximo) {
-                largoMaximo = largo;
-                res = lista;
+            if (diferencia > 0) {
+                vector<hogar> lista = listaConDiferencia(vecHogarIngresos, i, j, diferencia);
+                int largo = lista.size();
+                if (largo > largoMaximo) {
+                    largoMaximo = largo;
+                    res = lista;
+                }
             }
         }
     }
@@ -379,6 +422,26 @@ vector<hogar> buscarMuestraHomogeneaMaxima(vector<hogarIngresos> vecHogarIngreso
 }
 
 // auxiliares ejercicio 10
+bool cumpleBusqueda(individuo individuo, vector<pair<int, dato>> busqueda) {
+    bool cumpleCondicion = true;
+    for (int j = 0; j < busqueda.size(); j++) {
+        if (individuo[busqueda[j].first] != busqueda[j].second) {
+            cumpleCondicion = false;
+        }
+    }
+    return cumpleCondicion;
+}
+
+int indiceEnTablaHogares(int codusu, eph_h th) {
+    for (int i = 0; i < th.size(); i++) {
+        if (th[i][HOGCODUSU] == codusu) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// auxiliares ejercicio 11
 float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud) {
     return sqrt(pow((centro.first - latitud), 2) + pow(centro.second - longitud, 2));
 }
@@ -396,36 +459,4 @@ int cantidadDeHogaresEnAnillo(eph_h th, int desde, int hasta, pair<int, int> cen
         }
     }
     return cantidadHogares;
-}
-
-// auxiliares ejercicio 11
-bool cumpleBusqueda(individuo individuo, vector<pair<int, dato>> busqueda) {
-    bool cumpleCondicion = true;
-    for (int j = 0; j < busqueda.size(); j++) {
-        if (individuo[busqueda[j].first] != busqueda[j].second) {
-            cumpleCondicion = false;
-        }
-    }
-    return cumpleCondicion;
-}
-
-// Implementacion Problema 11
-int indiceEnTablaHogares(int codusu, eph_h th) {
-    for (int i = 0; i < th.size(); i++) {
-        if (th[i][HOGCODUSU] == codusu) {
-            return i;
-        }
-    }
-    return -1;
-}
-
-void eliminarHogaresSinIndividuos(eph_i &ti, eph_h &th) {
-    eph_h th0 = th;
-    int eliminados = 0;
-    for (int i = 0; i < th0.size(); i++) {
-        if (cantidadDeHabitantes(th0[i], ti) == 0) {
-            th.erase(th.begin() + i - eliminados);
-            eliminados++;
-        }
-    }
 }

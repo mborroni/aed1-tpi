@@ -49,8 +49,6 @@ bool hogarValido(hogar h);
 
 bool valoresEnRangoH(eph_h th);
 
-bool esValida(eph_h th, eph_i ti);
-
 int obtenerMaximoHabitacionesEnRegion(eph_h &th, int region);
 
 bool trabaja(individuo i);
@@ -81,6 +79,16 @@ bool tieneCasaPropia(hogar h);
 
 bool tieneCasaChica(hogar h, eph_i ti);
 
+void swap(vector<vector<dato>> &lista, int i, int j);
+
+void burbujeo(vector<vector<dato>> &lista, int i);
+
+void ordenarHogaresPorRegionYCODUSU(vector<vector<dato>> &lista);
+
+void ordenarIndividuosPorComponente(eph_i &ti);
+
+void ordenarIndividuosPorHogar(eph_h &th, eph_i &ti);
+
 int ingresosDelHogar(hogar h, vector<individuo> inds);
 
 vector<hogarIngresos> crearTuplaHogarIngresos(vector<hogar> listaHogares, vector<individuo> listaIndividuos);
@@ -91,16 +99,16 @@ vector<hogar> listaConDiferencia(vector<hogarIngresos> vecHogarIngresos, int sta
 
 vector<hogar> buscarMuestraHomogeneaMaxima(vector<hogarIngresos> vecHogarIngresos);
 
-float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud);
-
-bool hogarEnAnillo(hogar hogar, int desde, int hasta, pair<int, int> centro);
-
-int cantidadDeHogaresEnAnillo(eph_h th, int desde, int hasta, pair<int, int> centro);
-
 bool cumpleBusqueda(individuo individuo, vector<pair<int, dato>> busqueda);
 
 int indiceEnTablaHogares(int codusu, eph_h th);
 
 void eliminarHogaresSinIndividuos(eph_i &ti, eph_h &th);
+
+float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud);
+
+bool hogarEnAnillo(hogar hogar, int desde, int hasta, pair<int, int> centro);
+
+int cantidadDeHogaresEnAnillo(eph_h th, int desde, int hasta, pair<int, int> centro);
 
 #endif //SOLUCION_AUXILIARES_H
