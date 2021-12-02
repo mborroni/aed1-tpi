@@ -6,13 +6,13 @@ using namespace std;
 
 // Implementacion Problema 1
 bool esEncuestaValida(eph_h th, eph_i ti) {
-    return !esVacia(ti) && !esVacia(th)
-    && esMatriz(ti) && esMatriz(th)
-    && cantidadCorrectaDeColumnasI(ti) && cantidadCorrectaDeColumnasH(th)
-    && !hayIndividuosSinHogares(ti, th) && !hayHogaresSinIndividuos(ti, th)
-    && !hayRepetidosI(ti) && !hayRepetidosH(th) && mismoAnioYTrimestre(ti, th)
-    && menosDe21MiembrosPorHogar(th, ti) && cantidadValidaDormitorios(th)
-    && valoresEnRangoI(ti) && valoresEnRangoH(th);
+    return !ti.empty() && !th.empty()
+           && esMatriz(ti) && esMatriz(th)
+           && cantidadCorrectaDeColumnasI(ti) && cantidadCorrectaDeColumnasH(th)
+           && !hayIndividuosSinHogares(ti, th) && !hayHogaresSinIndividuos(ti, th)
+           && !hayRepetidosI(ti) && !hayRepetidosH(th) && mismoAnioYTrimestre(ti, th)
+           && menosDe21MiembrosPorHogar(th, ti) && cantidadValidaDormitorios(th)
+           && valoresEnRangoI(ti) && valoresEnRangoH(th);
 }
 
 // Implementacion Problema 2

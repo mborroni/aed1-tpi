@@ -5,8 +5,6 @@
 
 bool esMatriz(vector<vector<dato>> t);
 
-bool esVacia(vector<vector<dato>> t);
-
 bool cantidadCorrectaDeColumnasI(eph_i ti);
 
 bool cantidadCorrectaDeColumnasH(eph_h th);
@@ -59,15 +57,11 @@ bool esCasaODepartamento(hogar h);
 
 bool suHogarEsCasaODepartamento(individuo i, eph_h th);
 
-bool individuoEnHogarValido(individuo i, eph_h th);
-
 bool realizaSusTareasEnEsteHogar(individuo i);
 
 bool tieneEspaciosReservadosParaElTrabajo(hogar h);
 
 bool suHogarTieneEspaciosReservadosParaElTrabajo(individuo i, eph_h th);
-
-bool trabajaEnSuVivienda(individuo i, eph_h th);
 
 int cantIndividuosQueTrabajan(eph_h th, eph_i ti);
 
@@ -102,8 +96,6 @@ vector<hogar> buscarMuestraHomogeneaMaxima(vector<hogarIngresos> vecHogarIngreso
 bool cumpleBusqueda(individuo individuo, vector<pair<int, dato>> busqueda);
 
 int indiceEnTablaHogares(int codusu, eph_h th);
-
-void eliminarHogaresSinIndividuos(eph_i &ti, eph_h &th);
 
 float distanciaEuclideana(pair<int, int> centro, int latitud, int longitud);
 

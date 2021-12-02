@@ -12,10 +12,6 @@ bool esMatriz(vector<vector<dato>> t) {
     return true;
 }
 
-bool esVacia(vector<vector<dato>> t) {
-    return t.empty();
-}
-
 bool cantidadCorrectaDeColumnasI(eph_i ti) {
     for (int i = 0; i < ti.size(); i++) {
         if (ti[i].size() != FILAS_INDIVIDUO) {
@@ -234,10 +230,6 @@ bool suHogarEsCasaODepartamento(individuo i, eph_h th) {
     return false;
 }
 
-bool individuoEnHogarValido(individuo i, eph_h th) {
-    return esDeCiudadGrande(i, th) && suHogarEsCasaODepartamento(i, th);
-}
-
 bool realizaSusTareasEnEsteHogar(individuo i) {
     return i[PP04G] == EN_ESTE_HOGAR;
 }
@@ -255,15 +247,12 @@ bool suHogarTieneEspaciosReservadosParaElTrabajo(individuo i, eph_h th) {
     return false;
 }
 
-
-bool trabajaEnSuVivienda(individuo i, eph_h th) {
-    return realizaSusTareasEnEsteHogar(i) && suHogarTieneEspaciosReservadosParaElTrabajo(i, th);
-}
-
 int cantIndividuosQueTrabajan(eph_h th, eph_i ti) {
     int suma = 0;
     for (int i = 0; i < ti.size(); i++) {
-        if (trabaja(ti[i]) && individuoEnHogarValido(ti[i], th)) {
+        if (trabaja(ti[i]) &&
+            esDeCiudadGrande(ti[i], th) &&
+            suHogarEsCasaODepartamento(ti[i], th)) {
             suma++;
         }
     }
@@ -273,7 +262,11 @@ int cantIndividuosQueTrabajan(eph_h th, eph_i ti) {
 int cantIndividuosTrabajandoEnSuVivienda(eph_h th, eph_i ti) {
     int suma = 0;
     for (int i = 0; i < ti.size(); i++) {
-        if (trabaja(ti[i]) && trabajaEnSuVivienda(ti[i], th) && individuoEnHogarValido(ti[i], th)) {
+        if (trabaja(ti[i]) &&
+            realizaSusTareasEnEsteHogar(ti[i]) &&
+            suHogarTieneEspaciosReservadosParaElTrabajo(ti[i], th) &&
+            esDeCiudadGrande(ti[i], th) &&
+            suHogarEsCasaODepartamento(ti[i], th)) {
             suma++;
         }
     }
@@ -322,7 +315,7 @@ void ordenarHogaresPorRegionYCODUSU(vector<vector<dato>> &lista) {
 void ordenarIndividuosPorComponente(eph_i &ti) {
     for (int i = 0; i < ti.size(); i++) {
         for (int j = i + 1; j <= ti.size() - 1; j++) {
-            if ((ti[j][COMPONENTE] < ti[i][COMPONENTE]) && (ti[j][INDCODUSU]==ti[i][INDCODUSU])) {
+            if ((ti[j][COMPONENTE] < ti[i][COMPONENTE]) && (ti[j][INDCODUSU] == ti[i][INDCODUSU])) {
                 swap(ti, i, j);
             }
         }
